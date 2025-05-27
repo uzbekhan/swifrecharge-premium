@@ -88,6 +88,32 @@
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
     
+    .mobile-top-bar-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .notification-badge {
+      position: relative;
+      cursor: pointer;
+    }
+    
+    .notification-count {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: #ff4757;
+      color: white;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
     /* Sidebar */
     .mobile-sidebar {
       position: fixed;
@@ -126,6 +152,49 @@
     .sidebar-overlay.show {
       opacity: 1;
       pointer-events: auto;
+    }
+    
+    /* Sidebar Checkboxes */
+    .sidebar-checkbox {
+      display: flex;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      cursor: pointer;
+    }
+    
+    .sidebar-checkbox input[type="checkbox"] {
+      margin-right: 12px;
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary-color);
+    }
+    
+    .sidebar-checkbox label {
+      flex: 1;
+      font-size: 16px;
+    }
+    
+    /* Login Button */
+    .sidebar-login-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 12px;
+      margin-top: 20px;
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: all var(--transition-speed) ease;
+    }
+    
+    .sidebar-login-btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
     }
     
     /* Service Buttons */
@@ -201,6 +270,16 @@
         border-radius: 8px;
         box-shadow: 0 5px 15px rgba(0,0,0,0.1);
       }
+      
+      .navbar-nav .nav-item {
+        position: relative;
+      }
+      
+      .navbar-nav .nav-item:not(:last-child)::after {
+        content: "•";
+        color: #dee2e6;
+        margin: 0 8px;
+      }
     }
     
     /* Mobile-specific styles */
@@ -270,13 +349,25 @@
     .greeting {
       font-weight: 600;
       margin-bottom: 20px;
-      font-size: 1.2rem;
+    }
+    
+    .greeting h5 {
+      color: #6c757d;
+      margin-bottom: 5px;
+    }
+    
+    .greeting h4 {
+      color: var(--primary-color);
     }
     
     /* Haptic feedback for mobile */
     @media (hover: none) {
       .service-button:active {
         transform: scale(0.98);
+      }
+      
+      .sidebar-login-btn:active {
+        transform: scale(0.98) !important;
       }
     }
   </style>
@@ -291,16 +382,29 @@
     <button class="btn btn-link text-dark p-0" id="sidebarToggle">
       <i class="bi bi-list" style="font-size: 1.5rem;"></i>
     </button>
-    <img src="https://swiftrecharge.com/content/img/Company-logo.png" alt="Swift Recharge" height="30" class="mx-auto">
-    <div class="dropdown">
-      <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="mobileCurrencyDropdown" data-bs-toggle="dropdown">
-        $ USD
-      </button>
-      <ul class="dropdown-menu dropdown-menu-end">
-        <li><a class="dropdown-item" href="#" onclick="changeCurrency('USD')">$ USD</a></li>
-        <li><a class="dropdown-item" href="#" onclick="changeCurrency('EUR')">€ EUR</a></li>
-        <li><a class="dropdown-item" href="#" onclick="changeCurrency('GBP')">£ GBP</a></li>
-      </ul>
+    
+    <img src="https://swiftrecharge.com/content/img/Company-logo.png" alt="Swift Recharge" height="30">
+    
+    <div class="mobile-top-bar-right">
+      <div class="dropdown">
+        <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="mobileCurrencyDropdown" data-bs-toggle="dropdown">
+          $ USD
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="#" onclick="changeCurrency('USD')">$ USD</a></li>
+          <li><a class="dropdown-item" href="#" onclick="changeCurrency('EUR')">€ EUR</a></li>
+          <li><a class="dropdown-item" href="#" onclick="changeCurrency('GBP')">£ GBP</a></li>
+        </ul>
+      </div>
+      
+      <div class="notification-badge">
+        <i class="bi bi-bell" style="font-size: 1.2rem;"></i>
+        <span class="notification-count">3</span>
+      </div>
+      
+      <a href="https://swiftrecharge.com/login" class="text-dark">
+        <i class="bi bi-person-circle" style="font-size: 1.4rem;"></i>
+      </a>
     </div>
   </div>
 
@@ -312,64 +416,54 @@
       <button class="btn-close" id="closeSidebar"></button>
     </div>
     
-    <div class="greeting" id="timeGreeting"></div>
-    
-    <div class="mb-4">
-      <a href="https://swiftrecharge.com/login" class="btn btn-primary w-100">
-        <i class="bi bi-box-arrow-in-right"></i> Login / Register
-      </a>
+    <div class="greeting">
+      <h5>Welcome</h5>
+      <h4 id="timeGreeting">Good Evening!</h4>
     </div>
     
-    <h5 class="mb-3">Select Services</h5>
-    <div class="service-grid">
-      <a href="https://swiftrecharge.com/sendrecharge" class="service-button">
-        <i class="bi bi-telephone"></i>
-        <span>Recharge</span>
-      </a>
-      <a href="https://swiftrecharge.com/buy-gift-cards" class="service-button">
-        <i class="bi bi-gift"></i>
-        <span>Gift Cards</span>
-      </a>
-      <a href="https://swiftrecharge.com/pay-utilities" class="service-button">
-        <i class="bi bi-lightbulb"></i>
-        <span>Utilities</span>
-      </a>
-      <a href="https://swiftrecharge.com/gift-cards?country=US&categoryname=Payment%20Cards&category=Ei3ZymFTyAU%3D" class="service-button">
-        <i class="bi bi-credit-card"></i>
-        <span>Prepaid Cards</span>
-      </a>
-      <a href="https://swiftrecharge.com/gift-cards?categoryname=Games&category=CzIwX1J8vyY%3D" class="service-button">
-        <i class="bi bi-controller"></i>
-        <span>Games</span>
-      </a>
-      <a href="https://simallo.com" class="service-button">
-        <i class="bi bi-cpu"></i>
-        <span>eSIMs</span>
-      </a>
-      <a href="https://swiftrecharge.com/gift-cards?categoryname=Travel&category=rv3QGQkcCr0%3D" class="service-button">
-        <i class="bi bi-airplane"></i>
-        <span>Travel</span>
-      </a>
-      <a href="https://swiftrecharge.com/onramp" class="service-button">
-        <i class="bi bi-currency-bitcoin"></i>
-        <span>Onramp</span>
-      </a>
-    </div>
-    
-    <div class="mt-4">
-      <select class="form-select mb-3" onchange="changeLanguage(this)">
-        <option value="en">English</option>
-        <option value="es">Español</option>
-        <option value="fr">Français</option>
-      </select>
-      
-      <div class="d-flex justify-content-center gap-3 mt-3">
-        <a href="https://www.facebook.com/pg/SwiftRechargeCom" target="_blank" class="text-dark"><i class="bi bi-facebook fs-5"></i></a>
-        <a href="https://twitter.com/swiftrecharges" target="_blank" class="text-dark"><i class="bi bi-twitter-x fs-5"></i></a>
-        <a href="https://www.instagram.com/swiftrecharges/" target="_blank" class="text-dark"><i class="bi bi-instagram fs-5"></i></a>
-        <a href="https://t.me/swiftrechargebot" target="_blank" class="text-dark"><i class="bi bi-telegram fs-5"></i></a>
+    <div class="sidebar-menu">
+      <div class="sidebar-checkbox">
+        <input type="checkbox" id="recharge">
+        <label for="recharge">Recharge</label>
+      </div>
+      <div class="sidebar-checkbox">
+        <input type="checkbox" id="giftCards" checked>
+        <label for="giftCards">Gift Cards</label>
+      </div>
+      <div class="sidebar-checkbox">
+        <input type="checkbox" id="utilities">
+        <label for="utilities">Utilities</label>
+      </div>
+      <div class="sidebar-checkbox">
+        <input type="checkbox" id="prepaidCards">
+        <label for="prepaidCards">Prepaid Cards</label>
+      </div>
+      <div class="sidebar-checkbox">
+        <input type="checkbox" id="games">
+        <label for="games">Games</label>
+      </div>
+      <div class="sidebar-checkbox">
+        <input type="checkbox" id="esims">
+        <label for="esims">eSIMs</label>
+      </div>
+      <div class="sidebar-checkbox">
+        <input type="checkbox" id="onramp">
+        <label for="onramp">OnRamp</label>
+      </div>
+      <div class="sidebar-checkbox">
+        <input type="checkbox" id="promotions" checked>
+        <label for="promotions">Promotions</label>
+      </div>
+      <div class="sidebar-checkbox">
+        <input type="checkbox" id="quickLinks">
+        <label for="quickLinks">Quick Links</label>
       </div>
     </div>
+    
+    <button class="sidebar-login-btn" onclick="window.location.href='https://swiftrecharge.com/login'">
+      <i class="bi bi-box-arrow-in-right"></i>
+      Login
+    </button>
   </div>
 
   <!-- Desktop Navigation -->
@@ -400,13 +494,13 @@
             </a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="https://swiftrecharge.com/buy-gift-cards">All Gift Cards</a></li>
-              <li><a class="dropdown-item" href="https://swiftrecharge.com/gift-cards?country=US&categoryname=Payment%20Cards&category=Ei3ZymFTyAU%3D">Prepaid Cards</a></li>
-              <li><a class="dropdown-item" href="https://swiftrecharge.com/gift-cards?categoryname=Games&category=CzIwX1J8vyY%3D">Games</a></li>
-              <li><a class="dropdown-item" href="https://swiftrecharge.com/gift-cards?categoryname=Travel&category=rv3QGQkcCr0%3D">Travel</a></li>
             </ul>
           </li>
           <li class="nav-item"><a class="nav-link" href="https://swiftrecharge.com/pay-utilities">Utilities</a></li>
           <li class="nav-item"><a class="nav-link" href="https://simallo.com">eSIMs</a></li>
+          <li class="nav-item"><a class="nav-link" href="https://swiftrecharge.com/gift-cards?country=US&categoryname=Payment%20Cards&category=Ei3ZymFTyAU%3D">Prepaid Cards</a></li>
+          <li class="nav-item"><a class="nav-link" href="https://swiftrecharge.com/gift-cards?categoryname=Games&category=CzIwX1J8vyY%3D">Games</a></li>
+          <li class="nav-item"><a class="nav-link" href="https://swiftrecharge.com/gift-cards?categoryname=Travel&category=rv3QGQkcCr0%3D">Travel</a></li>
           <li class="nav-item"><a class="btn btn-primary" href="https://swiftrecharge.com/login">Login</a></li>
           <li class="nav-item">
             <select class="form-select" style="width:auto" onchange="changeLanguage(this)">
@@ -592,7 +686,7 @@
               <li><a href="sendrecharge" title="Recharge"> Recharge</a></li>
               <li><a href="/gift-cards">Buy a Gift Card</a></li>
               <li><a href="/pay-utilities">Pay Utility</a></li>
-              <li><a href="/gift-cards?categoryname=Prepaid Cards&category=Ei3ZymFTyAU%3D">Prepaid Cards</a></li>
+              <li><a href="/gift-cards?country=US&categoryname=Payment%20Cards&category=Ei3ZymFTyAU%3D">Prepaid Cards</a></li>
               <li><a href="/gift-cards?categoryname=Games&category=CzIwX1J8vyY%3D">Games</a></li>
               <li><a href="/gift-cards?categoryname=eSIMs&category=t6hUa6NLqXk%3D">eSIMs</a></li>
               <li><a href="/onramp">OnRamp</a></li>
@@ -721,6 +815,22 @@
     
     updateGreeting();
 
+    // Toggle checkboxes in sidebar
+    document.querySelectorAll('.sidebar-checkbox').forEach(item => {
+      item.addEventListener('click', function(e) {
+        if (e.target.tagName !== 'INPUT') {
+          const checkbox = this.querySelector('input[type="checkbox"]');
+          checkbox.checked = !checkbox.checked;
+        }
+      });
+    });
+    
+    // Notification badge click handler
+    document.querySelector('.notification-badge').addEventListener('click', function() {
+      // Implement notification panel toggle here
+      console.log('Notifications clicked');
+    });
+
     // Highlight current page in navigation
     document.addEventListener('DOMContentLoaded', function() {
       const currentPath = window.location.pathname.split('/')[1] || 'home';
@@ -774,5 +884,4 @@
     }
   </script>
 </body>
-</html>
 </html>
