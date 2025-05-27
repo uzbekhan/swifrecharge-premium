@@ -114,6 +114,103 @@
     }
   </style>
 </head>
+  <style>
+    /* Mobile Sidebar Styles */
+    @media (max-width: 768px) {
+      .offcanvas-start {
+        width: 280px;
+        transform: translateX(-100%);
+      }
+      .navbar-toggler {
+        position: fixed;
+        left: 15px;
+        top: 15px;
+        z-index: 1000;
+      }
+      .service-buttons-mobile {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        padding: 15px;
+      }
+      .service-button-mobile {
+        padding: 15px;
+        text-align: center;
+        border: 2px solid #007bff;
+        border-radius: 8px;
+      }
+      .mobile-menu-header {
+        padding: 20px;
+        border-bottom: 1px solid #ddd;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Mobile Sidebar Menu -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu">
+  <div class="offcanvas-header mobile-menu-header">
+    <img src="https://swiftrecharge.com/content/img/Company-logo.png" alt="Logo" height="30">
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class="service-buttons-mobile">
+      <a href="https://swiftrecharge.com/sendrecharge" class="service-button-mobile">
+        <i class="bi bi-telephone"></i><br>Recharge
+      </a>
+      <a href="https://swiftrecharge.com/buy-gift-cards" class="service-button-mobile">
+        <i class="bi bi-gift"></i><br>Gift Cards
+      </a>
+      <a href="https://swiftrecharge.com/pay-utilities" class="service-button-mobile">
+        <i class="bi bi-lightbulb"></i><br>Utilities
+      </a>
+      <a href="https://swiftrecharge.com/gift-cards?country=US&categoryname=Payment%20Cards&category=Ei3ZymFTyAU%3D" class="service-button-mobile">
+        <i class="bi bi-credit-card"></i><br>Prepaid Cards
+      </a>
+      <a href="https://swiftrecharge.com/gift-cards?categoryname=Games&category=CzIwX1J8vyY%3D" class="service-button-mobile">
+        <i class="bi bi-controller"></i><br>Games
+      </a>
+      <a href="https://simallo.com" class="service-button-mobile">
+        <i class="bi bi-cpu"></i><br>eSIMs
+      </a>
+      <a href="https://swiftrecharge.com/gift-cards?categoryname=Travel&category=rv3QGQkcCr0%3D" class="service-button-mobile">
+        <i class="bi bi-airplane"></i><br>Travel
+      </a>
+      <a href="https://swiftrecharge.com/onramp" class="service-button-mobile">
+        <i class="bi bi-currency-bitcoin"></i><br>Onramp
+      </a>
+    </div>
+    
+    <!-- Additional Mobile Menu Items -->
+    <div class="list-group">
+      <a href="https://swiftrecharge.com/login" class="list-group-item list-group-item-action">
+        <i class="bi bi-box-arrow-in-right"></i> Login
+      </a>
+      <div class="list-group-item">
+        <select class="form-select" onchange="changeLanguage(this)">
+          <option>English</option>
+          <option>Español</option>
+          <option>Français</option>
+        </select>
+      </div>
+      <div class="list-group-item">
+        <select class="form-select" onchange="changeCurrency(this)">
+          <option>$ USD</option>
+          <option>€ EUR</option>
+          <option>£ GBP</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modified Navigation -->
+<nav class="navbar navbar-light bg-white fixed-top d-lg-none">
+  <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+</nav>
 
 <body>
 <div class="preloader" id="preloader"><div></div></div>
@@ -452,4 +549,15 @@
   }
 </script>
 </body>
+<script>
+  // Initialize the mobile menu
+  const mobileMenu = new bootstrap.Offcanvas('#mobileMenu');
+  
+  // Handle menu state on resize
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+      mobileMenu.hide();
+    }
+  });
+</script>
 </html>
