@@ -25,6 +25,10 @@
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" rel="stylesheet">
+  
+  <!-- Zendesk Widget with your key -->
+  <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=55e28a38-01e4-46cb-92f0-727d36a3a46f"></script>
+  
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -55,63 +59,106 @@
       background: #f8f9fa;
       padding: 40px 0;
     }
+    .nav-link.active {
+      font-weight: 600;
+      color: #007bff !important;
+    }
+    .dropdown-menu {
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    /* Zendesk widget customization */
+    #Embed iframe {
+      z-index: 99999 !important;
+    }
+    .zEWidget-launcher {
+      background-color: #007bff !important;
+    }
+    
+    @media (max-width: 768px) {
+      .service-button {
+        padding: 15px 10px;
+        font-size: 0.9rem;
+      }
+      .hero {
+        padding: 80px 0;
+      }
+      .navbar-nav {
+        gap: 0.5rem !important;
+      }
+    }
   </style>
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-186097065-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'UA-186097065-1');
-</script>
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-<style>
-  .preloader {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-color: #ffffff;
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .preloader div {
-    width: 40px;
-    height: 40px;
-    border: 4px solid #007bff;
-    border-top-color: transparent;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-</style>
+  
+  <!-- Preloader CSS -->
+  <style>
+    .preloader {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #ffffff;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .preloader div {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #007bff;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
 </head>
+
 <body>
 <div class="preloader" id="preloader"><div></div></div>
 
 <!-- Top Navigation -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm" aria-label="Main navigation">
   <div class="container">
     <a class="navbar-brand fw-bold text-primary" href="https://swiftrecharge.com/">
       <img src="https://swiftrecharge.com/content/img/Company-logo.png" alt="Swift Recharge" height="30">
     </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex flex-wrap align-items-center gap-3">
-        <li class="nav-item"><span class="nav-link">$ USD</span></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            $ USD
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#" onclick="changeCurrency('USD')">$ USD</a></li>
+            <li><a class="dropdown-item" href="#" onclick="changeCurrency('EUR')">€ EUR</a></li>
+            <li><a class="dropdown-item" href="#" onclick="changeCurrency('GBP')">£ GBP</a></li>
+          </ul>
+        </li>
         <li class="nav-item"><a class="nav-link" href="https://swiftrecharge.com/sendrecharge">Recharge</a></li>
-        <li class="nav-item"><a class="nav-link" href="https://swiftrecharge.com/buy-gift-cards">Gift Cards</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Gift Cards
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="https://swiftrecharge.com/buy-gift-cards">All Gift Cards</a></li>
+            <li><a class="dropdown-item" href="https://swiftrecharge.com/gift-cards?country=US&categoryname=Payment%20Cards&category=Ei3ZymFTyAU%3D">Prepaid Cards</a></li>
+            <li><a class="dropdown-item" href="https://swiftrecharge.com/gift-cards?categoryname=Games&category=CzIwX1J8vyY%3D">Games</a></li>
+            <li><a class="dropdown-item" href="https://swiftrecharge.com/gift-cards?categoryname=Travel&category=rv3QGQkcCr0%3D">Travel</a></li>
+          </ul>
+        </li>
         <li class="nav-item"><a class="nav-link" href="https://swiftrecharge.com/pay-utilities">Utilities</a></li>
-        <li class="nav-item"><a class="nav-link" href="https://swiftrecharge.com/gift-cards?country=US&categoryname=Payment%20Cards&category=Ei3ZymFTyAU%3D">Prepaid Cards</a></li>
-        <li class="nav-item"><a class="nav-link" href="https://swiftrecharge.com/gift-cards?categoryname=Games&category=CzIwX1J8vyY%3D">Games</a></li>
         <li class="nav-item"><a class="nav-link" href="https://simallo.com">eSIMs</a></li>
         <li class="nav-item"><a class="btn btn-primary" href="https://swiftrecharge.com/login">Login</a></li>
         <li class="nav-item">
-          <select class="form-select" style="width:auto">
-            <option>Select Language</option>
+          <select class="form-select" style="width:auto" onchange="changeLanguage(this)">
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
           </select>
         </li>
       </ul>
@@ -142,10 +189,12 @@
     </div>
   </div>
   <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon"></span>
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
   </button>
   <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-    <span class="carousel-control-next-icon"></span>
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
   </button>
 </div>
 
@@ -194,10 +243,10 @@
   <div class="container text-center">
     <h2 class="section-title">We accept</h2>
     <div class="d-flex justify-content-center align-items-center gap-4 mt-4 flex-wrap">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" alt="Visa" height="40">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" alt="MasterCard" height="40">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo.svg" alt="Amex" height="40">
-      <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" alt="Bitcoin" height="40">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" alt="Visa" height="40" loading="lazy">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" alt="MasterCard" height="40" loading="lazy">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo.svg" alt="Amex" height="40" loading="lazy">
+      <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" alt="Bitcoin" height="40" loading="lazy">
     </div>
   </div>
 </section>
@@ -216,14 +265,17 @@
   <div class="container">
     <h2 class="section-title">Download our free Mobile App</h2>
     <div class="d-flex justify-content-center mt-4">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play" height="50">
-      <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store" height="50" class="ms-3">
+      <a href="https://play.google.com/store/apps/details?id=com.app.swiftrecharge" target="_blank" rel="noopener">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play" height="50" loading="lazy">
+      </a>
+      <a href="https://apps.apple.com/app/swiftrecharge/id123456789" target="_blank" rel="noopener" class="ms-3">
+        <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store" height="50" loading="lazy">
+      </a>
     </div>
   </div>
 </section>
 
 <!-- Footer -->
-<!-- Full Custom Footer From User -->
 <footer id="colophon" class="site-footer d-none d-md-block pt-1" role="contentinfo">
   <hr class="border-secondary" />
   <div class="container-lg">
@@ -236,15 +288,15 @@
             <li><a href="/promotions">Promotions</a></li>
             <li><a href="contact" title="Contact Us"> Contact Us</a></li>
             <li><a href="faq" title="FAQ">FAQ</a></li>
-            <li><a href="https://blog.swiftrecharge.com/" target="_blank" title="Blog">Blog</a></li>
+            <li><a href="https://blog.swiftrecharge.com/" target="_blank" rel="noopener" title="Blog">Blog</a></li>
           </ul>
           <h3 class="footer-title mb-4">Follow Us</h3>
           <ul class="list-inline social-buttons">
-            <li><a href="https://www.facebook.com/pg/SwiftRechargeCom" target="_blank" title="Facebook"><i class="fa fa-facebook-f"></i></a></li>
-            <li><a href="https://www.linkedin.com/company/swiftrecharge" target="_blank" title="LinkedIn"><i class="fa fa-linkedin"></i></a></li>
-            <li><a href="https://t.me/swiftrecharge" target="_blank" title="Telegram"><i class="fa fa-telegram"></i></a></li>
-            <li><a href="https://twitter.com/swiftrecharges" target="_blank" title="Twitter"><i class="fa fa-twitter"></i></a></li>
-            <li><a href="https://www.instagram.com/swiftrecharges/" target="_blank" title="Instagram"><i class="fa fa-instagram"></i></a></li>
+            <li class="list-inline-item"><a href="https://www.facebook.com/pg/SwiftRechargeCom" target="_blank" rel="noopener" title="Facebook"><i class="bi bi-facebook"></i></a></li>
+            <li class="list-inline-item"><a href="https://www.linkedin.com/company/swiftrecharge" target="_blank" rel="noopener" title="LinkedIn"><i class="bi bi-linkedin"></i></a></li>
+            <li class="list-inline-item"><a href="https://t.me/swiftrechargebot" target="_blank" rel="noopener" title="Telegram"><i class="bi bi-telegram"></i></a></li>
+            <li class="list-inline-item"><a href="https://twitter.com/swiftrecharges" target="_blank" rel="noopener" title="Twitter"><i class="bi bi-twitter-x"></i></a></li>
+            <li class="list-inline-item"><a href="https://www.instagram.com/swiftrecharges/" target="_blank" rel="noopener" title="Instagram"><i class="bi bi-instagram"></i></a></li>
           </ul>
         </div>
       </div>
@@ -290,8 +342,8 @@
     </div>
     <div class="row mt-5">
       <div class="col-sm-3 col-md-2 col-4">
-        <a href="https://play.google.com/store/apps/details?id=com.app.swiftrecharge" target="_blank">
-          <img src="/content/img/google-play-reviews.png" alt="Send mobile recharge worldwide" />
+        <a href="https://play.google.com/store/apps/details?id=com.app.swiftrecharge" target="_blank" rel="noopener">
+          <img src="/content/img/google-play-reviews.png" alt="Get SwiftRecharge on Google Play" loading="lazy" />
         </a>
       </div>
       <div class="col-sm-6 col-md-8 col-4">
@@ -300,8 +352,8 @@
         </span>
       </div>
       <div class="col-sm-3 col-md-2 col-4">
-        <a href="https://stripe.com/" target="_blank">
-          <img src="/content/img/stripe-logo-1.png" class="cardlogo" alt="Send mobile recharge worldwide" />
+        <a href="https://stripe.com/" target="_blank" rel="noopener">
+          <img src="/content/img/stripe-logo-1.png" class="cardlogo" alt="Powered by Stripe" loading="lazy" />
         </a>
       </div>
     </div>
@@ -324,14 +376,73 @@
     </div>
   </div>
 </div>
-<!-- End Footer -->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
-  AOS.init();
+  // Initialize AOS animations
+  AOS.init({
+    duration: 800,
+    easing: 'ease-in-out',
+    once: true
+  });
+
+  // Hide preloader when page loads
   window.addEventListener('load', () => {
     document.getElementById('preloader').style.display = 'none';
+  });
+
+  // Highlight current page in navigation
+  document.addEventListener('DOMContentLoaded', function() {
+    const currentPath = window.location.pathname.split('/')[1] || 'home';
+    const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+    
+    navLinks.forEach(link => {
+      const linkPath = link.getAttribute('href').split('/')[1];
+      if (linkPath === currentPath) {
+        link.classList.add('active');
+        link.setAttribute('aria-current', 'page');
+      }
+    });
+  });
+
+  // Currency change function
+  function changeCurrency(currency) {
+    console.log('Currency changed to:', currency);
+    // Implementation would go here
+  }
+
+  // Language change function
+  function changeLanguage(select) {
+    const lang = select.value;
+    console.log('Language changed to:', lang);
+    // Implementation would go here
+  }
+
+  // Zendesk Widget Configuration
+  zE(function() {
+    zE.setHelpCenterSuggestions({ 
+      search: true,
+      contactOptions: {
+        enabled: true,
+        contactButton: {
+          '*': 'Contact Support'
+        }
+      },
+      contactForm: {
+        suppress: false,
+        fields: [
+          { id: 'description', prefill: { '*': '' } }
+        ]
+      }
+    });
+    
+    // Uncomment to enable proactive chat after 30 seconds
+    /*
+    setTimeout(function() {
+      zE.activate();
+    }, 30000);
+    */
   });
 </script>
 <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
