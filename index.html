@@ -23,49 +23,215 @@
   <meta name="twitter:description" content="Top up phones, buy cards, pay bills, and get eSIMs. Accepts crypto & bank cards.">
   <meta name="twitter:image" content="https://swiftrecharge.com/Content/img/gift-card-img.png">
 
+  <!-- Preload critical resources -->
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" as="style">
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" as="style">
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" as="script">
+  
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" rel="stylesheet">
   
-  <!-- Zendesk Widget with your key -->
+  <!-- Zendesk Widget -->
   <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=55e28a38-01e4-46cb-92f0-727d36a3a46f"></script>
   
   <style>
+    :root {
+      --primary-color: #007bff;
+      --primary-hover: #0069d9;
+      --glass-bg: rgba(255, 255, 255, 0.85);
+      --glass-border: 1px solid rgba(255, 255, 255, 0.2);
+      --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+      --transition-speed: 0.3s;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --glass-bg: rgba(30, 30, 30, 0.85);
+        --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+        --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+      }
+    }
+    
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: #f8f9fa;
+      min-height: 100vh;
     }
-    .hero {
-      background: url('https://swiftrecharge.com/SliderImageFolder/hero-slider-1.jpg') center/cover no-repeat;
-      color: white;
-      padding: 120px 0;
-      text-align: center;
+    
+    /* Glassmorphism effect */
+    .glass-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: var(--glass-border);
+      box-shadow: var(--glass-shadow);
+      border-radius: 16px;
+      transition: all var(--transition-speed) ease;
     }
-    .section-title {
-      font-weight: 700;
+    
+    /* Mobile Top Bar */
+    .mobile-top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 1050;
+      display: flex;
+      align-items: center;
+      padding: 0 15px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
-    .service-button {
-      border: 2px solid #007bff;
-      border-radius: 12px;
-      background-color: #fff;
-      color: #007bff;
+    
+    /* Sidebar */
+    .mobile-sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 320px;
+      max-width: 90%;
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 1055;
+      transform: translateX(-100%);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow-y: auto;
       padding: 20px;
-      transition: 0.3s;
     }
-    .service-button:hover {
-      background-color: #007bff;
-      color: #fff;
+    
+    .mobile-sidebar.show {
+      transform: translateX(0);
+    }
+    
+    .sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1050;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    
+    .sidebar-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    
+    /* Service Buttons */
+    .service-button {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 10px;
+      border-radius: 12px;
+      background: white;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      transition: all var(--transition-speed) ease;
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
+      text-decoration: none;
+      height: 100%;
+    }
+    
+    .service-button:hover, .service-button:focus {
+      background: var(--primary-color);
+      color: white;
       transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0, 123, 255, 0.2);
     }
-    footer {
-      background: #f8f9fa;
-      padding: 40px 0;
+    
+    .service-button i {
+      font-size: 24px;
+      margin-bottom: 8px;
     }
-    .nav-link.active {
-      font-weight: 600;
-      color: #007bff !important;
+    
+    /* Desktop-specific styles */
+    @media (min-width: 768px) {
+      .hero {
+        background: url('https://swiftrecharge.com/SliderImageFolder/hero-slider-1.jpg') center/cover no-repeat;
+        color: white;
+        padding: 120px 0;
+        text-align: center;
+      }
+      
+      .carousel-item {
+        min-height: 500px;
+      }
+      
+      .section-title {
+        font-weight: 700;
+        position: relative;
+        display: inline-block;
+      }
+      
+      .section-title:after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: var(--primary-color);
+      }
+      
+      footer {
+        background: #f8f9fa;
+        padding: 40px 0;
+      }
+      
+      .nav-link.active {
+        font-weight: 600;
+        color: var(--primary-color) !important;
+      }
+      
+      .dropdown-menu {
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      }
     }
-    .dropdown-menu {
-      border-radius: 8px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    
+    /* Mobile-specific styles */
+    @media (max-width: 767.98px) {
+      .desktop-only {
+        display: none !important;
+      }
+      
+      .mobile-content {
+        padding-top: 80px;
+        padding-bottom: 20px;
+      }
+      
+      .service-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        padding: 15px;
+      }
+      
+      .service-button {
+        padding: 18px 10px;
+      }
+      
+      .service-button i {
+        font-size: 22px;
+      }
+      
+      .carousel, .footer-section {
+        display: none;
+      }
     }
     
     /* Zendesk widget customization */
@@ -73,25 +239,10 @@
       z-index: 99999 !important;
     }
     .zEWidget-launcher {
-      background-color: #007bff !important;
+      background-color: var(--primary-color) !important;
     }
     
-    @media (max-width: 768px) {
-      .service-button {
-        padding: 15px 10px;
-        font-size: 0.9rem;
-      }
-      .hero {
-        padding: 80px 0;
-      }
-      .navbar-nav {
-        gap: 0.5rem !important;
-      }
-    }
-  </style>
-  
-  <!-- Preloader CSS -->
-  <style>
+    /* Preloader */
     .preloader {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -101,463 +252,527 @@
       align-items: center;
       justify-content: center;
     }
+    
     .preloader div {
       width: 40px;
       height: 40px;
-      border: 4px solid #007bff;
+      border: 4px solid var(--primary-color);
       border-top-color: transparent;
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
     }
+    
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
-  </style>
-</head>
-  <style>
-    /* Mobile Sidebar Styles */
-    @media (max-width: 768px) {
-      .offcanvas-start {
-        width: 280px;
-        transform: translateX(-100%);
-      }
-      .navbar-toggler {
-        position: fixed;
-        left: 15px;
-        top: 15px;
-        z-index: 1000;
-      }
-      .service-buttons-mobile {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        padding: 15px;
-      }
-      .service-button-mobile {
-        padding: 15px;
-        text-align: center;
-        border: 2px solid #007bff;
-        border-radius: 8px;
-      }
-      .mobile-menu-header {
-        padding: 20px;
-        border-bottom: 1px solid #ddd;
+    
+    /* Time-based greeting */
+    .greeting {
+      font-weight: 600;
+      margin-bottom: 20px;
+      font-size: 1.2rem;
+    }
+    
+    /* Haptic feedback for mobile */
+    @media (hover: none) {
+      .service-button:active {
+        transform: scale(0.98);
       }
     }
   </style>
 </head>
-<body>
-
-<!-- Mobile Sidebar Menu -->
-<div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu">
-  <div class="offcanvas-header mobile-menu-header">
-    <img src="https://swiftrecharge.com/content/img/Company-logo.png" alt="Logo" height="30">
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
-  </div>
-  <div class="offcanvas-body">
-    <div class="service-buttons-mobile">
-      <a href="https://swiftrecharge.com/sendrecharge" class="service-button-mobile">
-        <i class="bi bi-telephone"></i><br>Recharge
-      </a>
-      <a href="https://swiftrecharge.com/buy-gift-cards" class="service-button-mobile">
-        <i class="bi bi-gift"></i><br>Gift Cards
-      </a>
-      <a href="https://swiftrecharge.com/pay-utilities" class="service-button-mobile">
-        <i class="bi bi-lightbulb"></i><br>Utilities
-      </a>
-      <a href="https://swiftrecharge.com/gift-cards?country=US&categoryname=Payment%20Cards&category=Ei3ZymFTyAU%3D" class="service-button-mobile">
-        <i class="bi bi-credit-card"></i><br>Prepaid Cards
-      </a>
-      <a href="https://swiftrecharge.com/gift-cards?categoryname=Games&category=CzIwX1J8vyY%3D" class="service-button-mobile">
-        <i class="bi bi-controller"></i><br>Games
-      </a>
-      <a href="https://simallo.com" class="service-button-mobile">
-        <i class="bi bi-cpu"></i><br>eSIMs
-      </a>
-      <a href="https://swiftrecharge.com/gift-cards?categoryname=Travel&category=rv3QGQkcCr0%3D" class="service-button-mobile">
-        <i class="bi bi-airplane"></i><br>Travel
-      </a>
-      <a href="https://swiftrecharge.com/onramp" class="service-button-mobile">
-        <i class="bi bi-currency-bitcoin"></i><br>Onramp
-      </a>
-    </div>
-    
-    <!-- Additional Mobile Menu Items -->
-    <div class="list-group">
-      <a href="https://swiftrecharge.com/login" class="list-group-item list-group-item-action">
-        <i class="bi bi-box-arrow-in-right"></i> Login
-      </a>
-      <div class="list-group-item">
-        <select class="form-select" onchange="changeLanguage(this)">
-          <option>English</option>
-          <option>Español</option>
-          <option>Français</option>
-        </select>
-      </div>
-      <div class="list-group-item">
-        <select class="form-select" onchange="changeCurrency(this)">
-          <option>$ USD</option>
-          <option>€ EUR</option>
-          <option>£ GBP</option>
-        </select>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modified Navigation -->
-<nav class="navbar navbar-light bg-white fixed-top d-lg-none">
-  <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-</nav>
 
 <body>
-<div class="preloader" id="preloader"><div></div></div>
+  <!-- Preloader -->
+  <div class="preloader" id="preloader"><div></div></div>
 
-<!-- Top Navigation -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm" aria-label="Main navigation">
-  <div class="container">
-    <a class="navbar-brand fw-bold text-primary" href="https://swiftrecharge.com/">
-      <img src="https://swiftrecharge.com/content/img/Company-logo.png" alt="Swift Recharge" height="30">
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+  <!-- Mobile Top Bar -->
+  <div class="mobile-top-bar d-lg-none">
+    <button class="btn btn-link text-dark p-0" id="sidebarToggle">
+      <i class="bi bi-list" style="font-size: 1.5rem;"></i>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex flex-wrap align-items-center gap-3">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            $ USD
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#" onclick="changeCurrency('USD')">$ USD</a></li>
-            <li><a class="dropdown-item" href="#" onclick="changeCurrency('EUR')">€ EUR</a></li>
-            <li><a class="dropdown-item" href="#" onclick="changeCurrency('GBP')">£ GBP</a></li>
-          </ul>
-        </li>
-        <li class="nav-item"><a class="nav-link" href="https://swiftrecharge.com/sendrecharge">Recharge</a></li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Gift Cards
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="https://swiftrecharge.com/buy-gift-cards">All Gift Cards</a></li>
-            <li><a class="dropdown-item" href="https://swiftrecharge.com/gift-cards?country=US&categoryname=Payment%20Cards&category=Ei3ZymFTyAU%3D">Prepaid Cards</a></li>
-            <li><a class="dropdown-item" href="https://swiftrecharge.com/gift-cards?categoryname=Games&category=CzIwX1J8vyY%3D">Games</a></li>
-            <li><a class="dropdown-item" href="https://swiftrecharge.com/gift-cards?categoryname=Travel&category=rv3QGQkcCr0%3D">Travel</a></li>
-          </ul>
-        </li>
-        <li class="nav-item"><a class="nav-link" href="https://swiftrecharge.com/pay-utilities">Utilities</a></li>
-        <li class="nav-item"><a class="nav-link" href="https://simallo.com">eSIMs</a></li>
-        <li class="nav-item"><a class="btn btn-primary" href="https://swiftrecharge.com/login">Login</a></li>
-        <li class="nav-item">
-          <select class="form-select" style="width:auto" onchange="changeLanguage(this)">
-            <option value="en">English</option>
-            <option value="es">Español</option>
-            <option value="fr">Français</option>
-          </select>
-        </li>
+    <img src="https://swiftrecharge.com/content/img/Company-logo.png" alt="Swift Recharge" height="30" class="mx-auto">
+    <div class="dropdown">
+      <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="mobileCurrencyDropdown" data-bs-toggle="dropdown">
+        $ USD
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li><a class="dropdown-item" href="#" onclick="changeCurrency('USD')">$ USD</a></li>
+        <li><a class="dropdown-item" href="#" onclick="changeCurrency('EUR')">€ EUR</a></li>
+        <li><a class="dropdown-item" href="#" onclick="changeCurrency('GBP')">£ GBP</a></li>
       </ul>
     </div>
   </div>
-</nav>
 
-<!-- Hero Carousel -->
-<div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <div class="hero" style="background-image: url('https://swiftrecharge.com/SliderImageFolder/hero-slider-1.jpg');">
-        <div class="container">
-          <h1 class="display-5 fw-bold" data-aos="fade-down">Swift Recharge any prepaid mobile number</h1>
-          <p class="lead" data-aos="fade-up">Stay connected all the time and anywhere with your beloved ones!</p>
-          <a href="#services" class="btn btn-primary mt-3" data-aos="zoom-in">Explore Services</a>
-        </div>
-      </div>
+  <!-- Mobile Sidebar -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="mobile-sidebar glass-card" id="mobileSidebar">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <img src="https://swiftrecharge.com/content/img/Company-logo.png" alt="Logo" height="30">
+      <button class="btn-close" id="closeSidebar"></button>
     </div>
-    <div class="carousel-item">
-      <div class="hero" style="background-image: url('https://swiftrecharge.com/SliderImageFolder/hero-slider-2.jpg');">
-        <div class="container">
-          <h1 class="display-5 fw-bold" data-aos="fade-down">Gift Cards & Prepaid Cards in Seconds</h1>
-          <p class="lead" data-aos="fade-up">Trusted by users in 100+ countries</p>
-          <a href="#services" class="btn btn-outline-light mt-3" data-aos="zoom-in">Explore Our Services</a>
-        </div>
-      </div>
-    </div>
-  </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div>
-
-<section id="services" class="py-5" data-aos="fade-up">
-  <div class="container">
-    <h1 class="display-5 fw-bold">Swift Recharge any prepaid mobile number</h1>
-    <p class="lead">Stay connected all the time and anywhere with your beloved ones!</p>
-  </div>
-</section>
-
-<!-- Our Services -->
-<section class="py-5">
-  <div class="container">
-    <h2 class="section-title text-center mb-4">Our Services</h2>
-    <div class="row text-center">
-      <div class="col-6 col-md-3 mb-3">
-        <a href="https://swiftrecharge.com/sendrecharge" class="d-block service-button"><i class="bi bi-telephone fs-2"></i><br>Recharge</a>
-      </div>
-      <div class="col-6 col-md-3 mb-3">
-        <a href="https://swiftrecharge.com/buy-gift-cards" class="d-block service-button"><i class="bi bi-gift fs-2"></i><br>Gift Cards</a>
-      </div>
-      <div class="col-6 col-md-3 mb-3">
-        <a href="https://swiftrecharge.com/pay-utilities" class="d-block service-button"><i class="bi bi-lightbulb fs-2"></i><br>Utilities</a>
-      </div>
-      <div class="col-6 col-md-3 mb-3">
-        <a href="https://swiftrecharge.com/gift-cards?country=US&categoryname=Payment%20Cards&category=Ei3ZymFTyAU%3D" class="d-block service-button"><i class="bi bi-credit-card fs-2"></i><br>Prepaid Cards</a>
-      </div>
-      <div class="col-6 col-md-3 mb-3">
-        <a href="https://swiftrecharge.com/gift-cards?categoryname=Games&category=CzIwX1J8vyY%3D" class="d-block service-button"><i class="bi bi-controller fs-2"></i><br>Games</a>
-      </div>
-      <div class="col-6 col-md-3 mb-3">
-        <a href="https://simallo.com" class="d-block service-button"><i class="bi bi-cpu fs-2"></i><br>eSIMs</a>
-      </div>
-      <div class="col-6 col-md-3 mb-3">
-        <a href="https://swiftrecharge.com/gift-cards?categoryname=Travel&category=rv3QGQkcCr0%3D" class="d-block service-button"><i class="bi bi-airplane fs-2"></i><br>Travel</a>
-      </div>
-      <div class="col-6 col-md-3 mb-3">
-        <a href="https://swiftrecharge.com/onramp" class="d-block service-button"><i class="bi bi-currency-bitcoin fs-2"></i><br>Onramp</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- We Accept -->
-<section class="py-5 bg-light">
-  <div class="container text-center">
-    <h2 class="section-title">We accept</h2>
-    <div class="d-flex justify-content-center align-items-center gap-4 mt-4 flex-wrap">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" alt="Visa" height="40" loading="lazy">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" alt="MasterCard" height="40" loading="lazy">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo.svg" alt="Amex" height="40" loading="lazy">
-      <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" alt="Bitcoin" height="40" loading="lazy">
-    </div>
-  </div>
-</section>
-
-<!-- Reviews -->
-<section class="py-5">
-  <div class="container text-center">
-    <h2 class="section-title mb-4">What Our Clients Say?</h2>
-    <script src="https://cdn.commoninja.com/sdk/latest/commonninja.js" defer></script>
-    <div class="commonninja_component pid-ca97e66a-0992-4e3f-a255-406d65f7f03f"></div>
-  </div>
-</section>
-
-<!-- App Download -->
-<section class="py-5 bg-white text-center">
-  <div class="container">
-    <h2 class="section-title">Download our free Mobile App</h2>
-    <div class="d-flex justify-content-center mt-4">
-      <a href="https://play.google.com/store/apps/details?id=com.app.swiftrecharge" target="_blank" rel="noopener">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play" height="50" loading="lazy">
-      </a>
-      <a href="https://apps.apple.com/app/swiftrecharge/id123456789" target="_blank" rel="noopener" class="ms-3">
-        <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store" height="50" loading="lazy">
+    
+    <div class="greeting" id="timeGreeting"></div>
+    
+    <div class="mb-4">
+      <a href="https://swiftrecharge.com/login" class="btn btn-primary w-100">
+        <i class="bi bi-box-arrow-in-right"></i> Login / Register
       </a>
     </div>
+    
+    <h5 class="mb-3">Select Services</h5>
+    <div class="service-grid">
+      <a href="https://swiftrecharge.com/sendrecharge" class="service-button">
+        <i class="bi bi-telephone"></i>
+        <span>Recharge</span>
+      </a>
+      <a href="https://swiftrecharge.com/buy-gift-cards" class="service-button">
+        <i class="bi bi-gift"></i>
+        <span>Gift Cards</span>
+      </a>
+      <a href="https://swiftrecharge.com/pay-utilities" class="service-button">
+        <i class="bi bi-lightbulb"></i>
+        <span>Utilities</span>
+      </a>
+      <a href="https://swiftrecharge.com/gift-cards?country=US&categoryname=Payment%20Cards&category=Ei3ZymFTyAU%3D" class="service-button">
+        <i class="bi bi-credit-card"></i>
+        <span>Prepaid Cards</span>
+      </a>
+      <a href="https://swiftrecharge.com/gift-cards?categoryname=Games&category=CzIwX1J8vyY%3D" class="service-button">
+        <i class="bi bi-controller"></i>
+        <span>Games</span>
+      </a>
+      <a href="https://simallo.com" class="service-button">
+        <i class="bi bi-cpu"></i>
+        <span>eSIMs</span>
+      </a>
+      <a href="https://swiftrecharge.com/gift-cards?categoryname=Travel&category=rv3QGQkcCr0%3D" class="service-button">
+        <i class="bi bi-airplane"></i>
+        <span>Travel</span>
+      </a>
+      <a href="https://swiftrecharge.com/onramp" class="service-button">
+        <i class="bi bi-currency-bitcoin"></i>
+        <span>Onramp</span>
+      </a>
+    </div>
+    
+    <div class="mt-4">
+      <select class="form-select mb-3" onchange="changeLanguage(this)">
+        <option value="en">English</option>
+        <option value="es">Español</option>
+        <option value="fr">Français</option>
+      </select>
+      
+      <div class="d-flex justify-content-center gap-3 mt-3">
+        <a href="https://www.facebook.com/pg/SwiftRechargeCom" target="_blank" class="text-dark"><i class="bi bi-facebook fs-5"></i></a>
+        <a href="https://twitter.com/swiftrecharges" target="_blank" class="text-dark"><i class="bi bi-twitter-x fs-5"></i></a>
+        <a href="https://www.instagram.com/swiftrecharges/" target="_blank" class="text-dark"><i class="bi bi-instagram fs-5"></i></a>
+        <a href="https://t.me/swiftrechargebot" target="_blank" class="text-dark"><i class="bi bi-telegram fs-5"></i></a>
+      </div>
+    </div>
   </div>
-</section>
 
-<!-- Footer -->
-<footer id="colophon" class="site-footer d-none d-md-block pt-1" role="contentinfo">
-  <hr class="border-secondary" />
-  <div class="container-lg">
-    <div class="row">
-      <div class="col-sm-6 col-md-3 col-6">
-        <div class="footer-widget text-start">
-          <h3 class="footer-title mb-4">Quick Links</h3>
-          <ul class="footer-menu left-arrow">
-            <li><a href="about" title="About Us"> About Us</a></li>
-            <li><a href="/promotions">Promotions</a></li>
-            <li><a href="contact" title="Contact Us"> Contact Us</a></li>
-            <li><a href="faq" title="FAQ">FAQ</a></li>
-            <li><a href="https://blog.swiftrecharge.com/" target="_blank" rel="noopener" title="Blog">Blog</a></li>
-          </ul>
-          <h3 class="footer-title mb-4">Follow Us</h3>
-          <ul class="list-inline social-buttons">
-            <li class="list-inline-item"><a href="https://www.facebook.com/pg/SwiftRechargeCom" target="_blank" rel="noopener" title="Facebook"><i class="bi bi-facebook"></i></a></li>
-            <li class="list-inline-item"><a href="https://www.linkedin.com/company/swiftrecharge" target="_blank" rel="noopener" title="LinkedIn"><i class="bi bi-linkedin"></i></a></li>
-            <li class="list-inline-item"><a href="https://t.me/swiftrechargebot" target="_blank" rel="noopener" title="Telegram"><i class="bi bi-telegram"></i></a></li>
-            <li class="list-inline-item"><a href="https://twitter.com/swiftrecharges" target="_blank" rel="noopener" title="Twitter"><i class="bi bi-twitter-x"></i></a></li>
-            <li class="list-inline-item"><a href="https://www.instagram.com/swiftrecharges/" target="_blank" rel="noopener" title="Instagram"><i class="bi bi-instagram"></i></a></li>
-          </ul>
+  <!-- Desktop Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm desktop-only" aria-label="Main navigation">
+    <div class="container">
+      <a class="navbar-brand fw-bold text-primary" href="https://swiftrecharge.com/">
+        <img src="https://swiftrecharge.com/content/img/Company-logo.png" alt="Swift Recharge" height="30">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex flex-wrap align-items-center gap-3">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              $ USD
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#" onclick="changeCurrency('USD')">$ USD</a></li>
+              <li><a class="dropdown-item" href="#" onclick="changeCurrency('EUR')">€ EUR</a></li>
+              <li><a class="dropdown-item" href="#" onclick="changeCurrency('GBP')">£ GBP</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="https://swiftrecharge.com/sendrecharge">Recharge</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              Gift Cards
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="https://swiftrecharge.com/buy-gift-cards">All Gift Cards</a></li>
+              <li><a class="dropdown-item" href="https://swiftrecharge.com/gift-cards?country=US&categoryname=Payment%20Cards&category=Ei3ZymFTyAU%3D">Prepaid Cards</a></li>
+              <li><a class="dropdown-item" href="https://swiftrecharge.com/gift-cards?categoryname=Games&category=CzIwX1J8vyY%3D">Games</a></li>
+              <li><a class="dropdown-item" href="https://swiftrecharge.com/gift-cards?categoryname=Travel&category=rv3QGQkcCr0%3D">Travel</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="https://swiftrecharge.com/pay-utilities">Utilities</a></li>
+          <li class="nav-item"><a class="nav-link" href="https://simallo.com">eSIMs</a></li>
+          <li class="nav-item"><a class="btn btn-primary" href="https://swiftrecharge.com/login">Login</a></li>
+          <li class="nav-item">
+            <select class="form-select" style="width:auto" onchange="changeLanguage(this)">
+              <option value="en">English</option>
+              <option value="es">Español</option>
+              <option value="fr">Français</option>
+            </select>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Desktop Hero Carousel -->
+  <div id="heroCarousel" class="carousel slide desktop-only" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <div class="hero" style="background-image: url('https://swiftrecharge.com/SliderImageFolder/hero-slider-1.jpg');">
+          <div class="container">
+            <h1 class="display-5 fw-bold" data-aos="fade-down">Swift Recharge any prepaid mobile number</h1>
+            <p class="lead" data-aos="fade-up">Stay connected all the time and anywhere with your beloved ones!</p>
+            <a href="#services" class="btn btn-primary mt-3" data-aos="zoom-in">Explore Services</a>
+          </div>
         </div>
       </div>
-      <div class="col-sm-6 col-md-3 col-6">
-        <div class="footer-widget text-start">
-          <h3 class="footer-title mb-4">Services</h3>
-          <ul class="footer-menu left-arrow">
-            <li><a href="sendrecharge" title="Recharge"> Recharge</a></li>
-            <li><a href="/gift-cards">Buy a Gift Card</a></li>
-            <li><a href="/pay-utilities">Pay Utility</a></li>
-            <li><a href="/gift-cards?categoryname=Prepaid Cards&category=Ei3ZymFTyAU%3D">Prepaid Cards</a></li>
-            <li><a href="/gift-cards?categoryname=Games&category=CzIwX1J8vyY%3D">Games</a></li>
-            <li><a href="/gift-cards?categoryname=eSIMs&category=t6hUa6NLqXk%3D">eSIMs</a></li>
-            <li><a href="/onramp">OnRamp</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-sm-6 col-md-3 col-6 d-none d-md-block">
-        <div class="footer-widget text-start">
-          <h3 class="footer-title mb-4">My Account</h3>
-          <ul class="footer-menu left-arrow">
-            <li><a href="/dashboard" title="Dashboard"> Dashboard</a></li>
-            <li><a href="/transactions" title="Airtime Transactions"> Airtime Transactions</a></li>
-            <li><a href="/DataBundleTransaction" title="Data Bundle Transactions"> Data Bundle Transactions</a></li>
-            <li><a href="/TransactionGiftCard" title="Gift Card Transactions"> Gift Card Transactions</a></li>
-            <li><a href="/TransactionUtility" title="Utilities Transactions"> Utilities Transactions</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-sm-6 col-md-3 col-6 d-none d-md-block">
-        <div class="footer-widget text-start">
-          <h3 class="footer-title mb-4">Send Recharge to</h3>
-          <ul class="footer-menu left-arrow">
-            <li><a class="selectCountry1" id="PH##+63">Philippines</a></li>
-            <li><a class="selectCountry1" id="ET##+251">Ethiopia</a></li>
-            <li><a class="selectCountry1" id="MX##+52">Mexico</a></li>
-            <li><a class="selectCountry1" id="CN##+86">China</a></li>
-            <li><a class="selectCountry1" id="HT##+509">Haiti</a></li>
-            <li><a class="selectCountry1" id="JM##+1876">Jamaica</a></li>
-          </ul>
+      <div class="carousel-item">
+        <div class="hero" style="background-image: url('https://swiftrecharge.com/SliderImageFolder/hero-slider-2.jpg');">
+          <div class="container">
+            <h1 class="display-5 fw-bold" data-aos="fade-down">Gift Cards & Prepaid Cards in Seconds</h1>
+            <p class="lead" data-aos="fade-up">Trusted by users in 100+ countries</p>
+            <a href="#services" class="btn btn-outline-light mt-3" data-aos="zoom-in">Explore Our Services</a>
+          </div>
         </div>
       </div>
     </div>
-    <div class="row mt-5">
-      <div class="col-sm-3 col-md-2 col-4">
+    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+  <!-- Mobile Main Content -->
+  <div class="container mobile-content d-lg-none">
+    <div class="service-grid">
+      <a href="https://swiftrecharge.com/sendrecharge" class="service-button">
+        <i class="bi bi-telephone"></i>
+        <span>Recharge</span>
+      </a>
+      <a href="https://swiftrecharge.com/buy-gift-cards" class="service-button">
+        <i class="bi bi-gift"></i>
+        <span>Gift Cards</span>
+      </a>
+      <a href="https://swiftrecharge.com/pay-utilities" class="service-button">
+        <i class="bi bi-lightbulb"></i>
+        <span>Utilities</span>
+      </a>
+      <a href="https://swiftrecharge.com/gift-cards?country=US&categoryname=Payment%20Cards&category=Ei3ZymFTyAU%3D" class="service-button">
+        <i class="bi bi-credit-card"></i>
+        <span>Prepaid Cards</span>
+      </a>
+      <a href="https://swiftrecharge.com/gift-cards?categoryname=Games&category=CzIwX1J8vyY%3D" class="service-button">
+        <i class="bi bi-controller"></i>
+        <span>Games</span>
+      </a>
+      <a href="https://simallo.com" class="service-button">
+        <i class="bi bi-cpu"></i>
+        <span>eSIMs</span>
+      </a>
+      <a href="https://swiftrecharge.com/gift-cards?categoryname=Travel&category=rv3QGQkcCr0%3D" class="service-button">
+        <i class="bi bi-airplane"></i>
+        <span>Travel</span>
+      </a>
+      <a href="https://swiftrecharge.com/onramp" class="service-button">
+        <i class="bi bi-currency-bitcoin"></i>
+        <span>Onramp</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Desktop Services Section -->
+  <section id="services" class="py-5 desktop-only">
+    <div class="container">
+      <h2 class="section-title text-center mb-5">Our Services</h2>
+      <div class="row text-center">
+        <div class="col-6 col-md-3 mb-4">
+          <a href="https://swiftrecharge.com/sendrecharge" class="d-block service-button"><i class="bi bi-telephone fs-2"></i><br>Recharge</a>
+        </div>
+        <div class="col-6 col-md-3 mb-4">
+          <a href="https://swiftrecharge.com/buy-gift-cards" class="d-block service-button"><i class="bi bi-gift fs-2"></i><br>Gift Cards</a>
+        </div>
+        <div class="col-6 col-md-3 mb-4">
+          <a href="https://swiftrecharge.com/pay-utilities" class="d-block service-button"><i class="bi bi-lightbulb fs-2"></i><br>Utilities</a>
+        </div>
+        <div class="col-6 col-md-3 mb-4">
+          <a href="https://swiftrecharge.com/gift-cards?country=US&categoryname=Payment%20Cards&category=Ei3ZymFTyAU%3D" class="d-block service-button"><i class="bi bi-credit-card fs-2"></i><br>Prepaid Cards</a>
+        </div>
+        <div class="col-6 col-md-3 mb-4">
+          <a href="https://swiftrecharge.com/gift-cards?categoryname=Games&category=CzIwX1J8vyY%3D" class="d-block service-button"><i class="bi bi-controller fs-2"></i><br>Games</a>
+        </div>
+        <div class="col-6 col-md-3 mb-4">
+          <a href="https://simallo.com" class="d-block service-button"><i class="bi bi-cpu fs-2"></i><br>eSIMs</a>
+        </div>
+        <div class="col-6 col-md-3 mb-4">
+          <a href="https://swiftrecharge.com/gift-cards?categoryname=Travel&category=rv3QGQkcCr0%3D" class="d-block service-button"><i class="bi bi-airplane fs-2"></i><br>Travel</a>
+        </div>
+        <div class="col-6 col-md-3 mb-4">
+          <a href="https://swiftrecharge.com/onramp" class="d-block service-button"><i class="bi bi-currency-bitcoin fs-2"></i><br>Onramp</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Desktop We Accept Section -->
+  <section class="py-5 bg-light desktop-only">
+    <div class="container text-center">
+      <h2 class="section-title">We accept</h2>
+      <div class="d-flex justify-content-center align-items-center gap-4 mt-4 flex-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" alt="Visa" height="40" loading="lazy">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" alt="MasterCard" height="40" loading="lazy">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo.svg" alt="Amex" height="40" loading="lazy">
+        <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" alt="Bitcoin" height="40" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <!-- Desktop Reviews -->
+  <section class="py-5 desktop-only">
+    <div class="container text-center">
+      <h2 class="section-title mb-4">What Our Clients Say?</h2>
+      <script src="https://cdn.commoninja.com/sdk/latest/commonninja.js" defer></script>
+      <div class="commonninja_component pid-ca97e66a-0992-4e3f-a255-406d65f7f03f"></div>
+    </div>
+  </section>
+
+  <!-- Desktop App Download -->
+  <section class="py-5 bg-white text-center desktop-only">
+    <div class="container">
+      <h2 class="section-title">Download our free Mobile App</h2>
+      <div class="d-flex justify-content-center mt-4">
         <a href="https://play.google.com/store/apps/details?id=com.app.swiftrecharge" target="_blank" rel="noopener">
-          <img src="/content/img/google-play-reviews.png" alt="Get SwiftRecharge on Google Play" loading="lazy" />
+          <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play" height="50" loading="lazy">
         </a>
-      </div>
-      <div class="col-sm-6 col-md-8 col-4">
-        <span id="siteseal">
-          <script nonce="layoutjavascripts" async type="text/javascript" src="https://seal.godaddy.com/getSeal?sealID=9R8rugZsUWED1Iser5Kok3i40b0T5WACgvdQKQZaKlYAsjiiX9gUZwth82QC"></script>
-        </span>
-      </div>
-      <div class="col-sm-3 col-md-2 col-4">
-        <a href="https://stripe.com/" target="_blank" rel="noopener">
-          <img src="/content/img/stripe-logo-1.png" class="cardlogo" alt="Powered by Stripe" loading="lazy" />
+        <a href="https://apps.apple.com/app/swiftrecharge/id123456789" target="_blank" rel="noopener" class="ms-3">
+          <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store" height="50" loading="lazy">
         </a>
       </div>
     </div>
-  </div>
-</footer>
-<div class="footer-two d-none d-md-block">
-  <div class="container-lg">
-    <div class="row">
-      <div class="col-12">
-        <ul class="list-group list-group-horizontal quicklinks float-start">
-          <li class="list-group-item border-0">&copy; 2025 - SwiftRecharge (Trademark of SwiftReload Inc). All Rights Reserved.</li>
-        </ul>
-        <ul class="list-group list-group-horizontal quicklinks float-end">
-          <li class="list-group-item border-0"><a href="/privacy-policy">Privacy Policy</a></li>
-          <li class="list-group-item border-0"><a href="/term-conditions">Terms and Conditions</a></li>
-          <li class="list-group-item border-0"><a href="/refund-policy">Refund Policy</a></li>
-          <li class="list-group-item border-0"><a href="/brand-trademark-disclaimer">Brand and Trademark Disclaimer</a></li>
-        </ul>
+  </section>
+
+  <!-- Desktop Footer -->
+  <footer id="colophon" class="site-footer desktop-only pt-1" role="contentinfo">
+    <hr class="border-secondary" />
+    <div class="container-lg">
+      <div class="row">
+        <div class="col-sm-6 col-md-3 col-6">
+          <div class="footer-widget text-start">
+            <h3 class="footer-title mb-4">Quick Links</h3>
+            <ul class="footer-menu left-arrow">
+              <li><a href="about" title="About Us"> About Us</a></li>
+              <li><a href="/promotions">Promotions</a></li>
+              <li><a href="contact" title="Contact Us"> Contact Us</a></li>
+              <li><a href="faq" title="FAQ">FAQ</a></li>
+              <li><a href="https://blog.swiftrecharge.com/" target="_blank" rel="noopener" title="Blog">Blog</a></li>
+            </ul>
+            <h3 class="footer-title mb-4">Follow Us</h3>
+            <ul class="list-inline social-buttons">
+              <li class="list-inline-item"><a href="https://www.facebook.com/pg/SwiftRechargeCom" target="_blank" rel="noopener" title="Facebook"><i class="bi bi-facebook"></i></a></li>
+              <li class="list-inline-item"><a href="https://www.linkedin.com/company/swiftrecharge" target="_blank" rel="noopener" title="LinkedIn"><i class="bi bi-linkedin"></i></a></li>
+              <li class="list-inline-item"><a href="https://t.me/swiftrechargebot" target="_blank" rel="noopener" title="Telegram"><i class="bi bi-telegram"></i></a></li>
+              <li class="list-inline-item"><a href="https://twitter.com/swiftrecharges" target="_blank" rel="noopener" title="Twitter"><i class="bi bi-twitter-x"></i></a></li>
+              <li class="list-inline-item"><a href="https://www.instagram.com/swiftrecharges/" target="_blank" rel="noopener" title="Instagram"><i class="bi bi-instagram"></i></a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-3 col-6">
+          <div class="footer-widget text-start">
+            <h3 class="footer-title mb-4">Services</h3>
+            <ul class="footer-menu left-arrow">
+              <li><a href="sendrecharge" title="Recharge"> Recharge</a></li>
+              <li><a href="/gift-cards">Buy a Gift Card</a></li>
+              <li><a href="/pay-utilities">Pay Utility</a></li>
+              <li><a href="/gift-cards?categoryname=Prepaid Cards&category=Ei3ZymFTyAU%3D">Prepaid Cards</a></li>
+              <li><a href="/gift-cards?categoryname=Games&category=CzIwX1J8vyY%3D">Games</a></li>
+              <li><a href="/gift-cards?categoryname=eSIMs&category=t6hUa6NLqXk%3D">eSIMs</a></li>
+              <li><a href="/onramp">OnRamp</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-3 col-6">
+          <div class="footer-widget text-start">
+            <h3 class="footer-title mb-4">My Account</h3>
+            <ul class="footer-menu left-arrow">
+              <li><a href="/dashboard" title="Dashboard"> Dashboard</a></li>
+              <li><a href="/transactions" title="Airtime Transactions"> Airtime Transactions</a></li>
+              <li><a href="/DataBundleTransaction" title="Data Bundle Transactions"> Data Bundle Transactions</a></li>
+              <li><a href="/TransactionGiftCard" title="Gift Card Transactions"> Gift Card Transactions</a></li>
+              <li><a href="/TransactionUtility" title="Utilities Transactions"> Utilities Transactions</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-3 col-6">
+          <div class="footer-widget text-start">
+            <h3 class="footer-title mb-4">Send Recharge to</h3>
+            <ul class="footer-menu left-arrow">
+              <li><a class="selectCountry1" id="PH##+63">Philippines</a></li>
+              <li><a class="selectCountry1" id="ET##+251">Ethiopia</a></li>
+              <li><a class="selectCountry1" id="MX##+52">Mexico</a></li>
+              <li><a class="selectCountry1" id="CN##+86">China</a></li>
+              <li><a class="selectCountry1" id="HT##+509">Haiti</a></li>
+              <li><a class="selectCountry1" id="JM##+1876">Jamaica</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-sm-3 col-md-2 col-4">
+          <a href="https://play.google.com/store/apps/details?id=com.app.swiftrecharge" target="_blank" rel="noopener">
+            <img src="/content/img/google-play-reviews.png" alt="Get SwiftRecharge on Google Play" loading="lazy" />
+          </a>
+        </div>
+        <div class="col-sm-6 col-md-8 col-4">
+          <span id="siteseal">
+            <script nonce="layoutjavascripts" async type="text/javascript" src="https://seal.godaddy.com/getSeal?sealID=9R8rugZsUWED1Iser5Kok3i40b0T5WACgvdQKQZaKlYAsjiiX9gUZwth82QC"></script>
+          </span>
+        </div>
+        <div class="col-sm-3 col-md-2 col-4">
+          <a href="https://stripe.com/" target="_blank" rel="noopener">
+            <img src="/content/img/stripe-logo-1.png" class="cardlogo" alt="Powered by Stripe" loading="lazy" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <div class="footer-two desktop-only">
+    <div class="container-lg">
+      <div class="row">
+        <div class="col-12">
+          <ul class="list-group list-group-horizontal quicklinks float-start">
+            <li class="list-group-item border-0">&copy; 2025 - SwiftRecharge (Trademark of SwiftReload Inc). All Rights Reserved.</li>
+          </ul>
+          <ul class="list-group list-group-horizontal quicklinks float-end">
+            <li class="list-group-item border-0"><a href="/privacy-policy">Privacy Policy</a></li>
+            <li class="list-group-item border-0"><a href="/term-conditions">Terms and Conditions</a></li>
+            <li class="list-group-item border-0"><a href="/refund-policy">Refund Policy</a></li>
+            <li class="list-group-item border-0"><a href="/brand-trademark-disclaimer">Brand and Trademark Disclaimer</a></li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-  // Initialize AOS animations
-  AOS.init({
-    duration: 800,
-    easing: 'ease-in-out',
-    once: true
-  });
-
-  // Hide preloader when page loads
-  window.addEventListener('load', () => {
-    document.getElementById('preloader').style.display = 'none';
-  });
-
-  // Highlight current page in navigation
-  document.addEventListener('DOMContentLoaded', function() {
-    const currentPath = window.location.pathname.split('/')[1] || 'home';
-    const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
-    
-    navLinks.forEach(link => {
-      const linkPath = link.getAttribute('href').split('/')[1];
-      if (linkPath === currentPath) {
-        link.classList.add('active');
-        link.setAttribute('aria-current', 'page');
-      }
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    // Initialize AOS animations
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: true
     });
-  });
 
-  // Currency change function
-  function changeCurrency(currency) {
-    console.log('Currency changed to:', currency);
-    // Implementation would go here
-  }
-
-  // Language change function
-  function changeLanguage(select) {
-    const lang = select.value;
-    console.log('Language changed to:', lang);
-    // Implementation would go here
-  }
-
-  // Zendesk Widget Configuration
-  zE(function() {
-    zE.setHelpCenterSuggestions({ 
-      search: true,
-      contactOptions: {
-        enabled: true,
-        contactButton: {
-          '*': 'Contact Support'
-        }
-      },
-      contactForm: {
-        suppress: false,
-        fields: [
-          { id: 'description', prefill: { '*': '' } }
-        ]
-      }
+    // Hide preloader when page loads
+    window.addEventListener('load', () => {
+      document.getElementById('preloader').style.display = 'none';
     });
+
+    // Mobile sidebar functionality
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const closeSidebar = document.getElementById('closeSidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const mobileSidebar = document.getElementById('mobileSidebar');
     
-    // Uncomment to enable proactive chat after 30 seconds
-    /*
-    setTimeout(function() {
-      zE.activate();
-    }, 30000);
-    */
-  });
-</script>
-<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-<script>
-  function googleTranslateElementInit() {
-    new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
-  }
-</script>
-</body>
-<script>
-  // Initialize the mobile menu
-  const mobileMenu = new bootstrap.Offcanvas('#mobileMenu');
-  
-  // Handle menu state on resize
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 768) {
-      mobileMenu.hide();
+    function toggleSidebar() {
+      mobileSidebar.classList.toggle('show');
+      sidebarOverlay.classList.toggle('show');
+      document.body.style.overflow = mobileSidebar.classList.contains('show') ? 'hidden' : '';
     }
-  });
-</script>
+    
+    sidebarToggle.addEventListener('click', toggleSidebar);
+    closeSidebar.addEventListener('click', toggleSidebar);
+    sidebarOverlay.addEventListener('click', toggleSidebar);
+    
+    // Close sidebar when clicking outside
+    document.addEventListener('click', (e) => {
+      if (mobileSidebar.classList.contains('show') && 
+          !mobileSidebar.contains(e.target) && 
+          e.target !== sidebarToggle) {
+        toggleSidebar();
+      }
+    });
+
+    // Time-based greeting
+    function updateGreeting() {
+      const hour = new Date().getHours();
+      let greeting = '';
+      
+      if (hour < 12) {
+        greeting = 'Good morning!';
+      } else if (hour < 18) {
+        greeting = 'Good afternoon!';
+      } else {
+        greeting = 'Good evening!';
+      }
+      
+      document.getElementById('timeGreeting').textContent = greeting;
+    }
+    
+    updateGreeting();
+
+    // Highlight current page in navigation
+    document.addEventListener('DOMContentLoaded', function() {
+      const currentPath = window.location.pathname.split('/')[1] || 'home';
+      const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+      
+      navLinks.forEach(link => {
+        const linkPath = link.getAttribute('href').split('/')[1];
+        if (linkPath === currentPath) {
+          link.classList.add('active');
+          link.setAttribute('aria-current', 'page');
+        }
+      });
+    });
+
+    // Currency change function
+    function changeCurrency(currency) {
+      console.log('Currency changed to:', currency);
+      // Implementation would go here
+    }
+
+    // Language change function
+    function changeLanguage(select) {
+      const lang = select.value;
+      console.log('Language changed to:', lang);
+      // Implementation would go here
+    }
+
+    // Zendesk Widget Configuration
+    zE(function() {
+      zE.setHelpCenterSuggestions({ 
+        search: true,
+        contactOptions: {
+          enabled: true,
+          contactButton: {
+            '*': 'Contact Support'
+          }
+        },
+        contactForm: {
+          suppress: false,
+          fields: [
+            { id: 'description', prefill: { '*': '' } }
+          ]
+        }
+      });
+    });
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <script>
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+    }
+  </script>
+</body>
+</html>
 </html>
